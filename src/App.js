@@ -1,45 +1,66 @@
-
-  import React, { useEffect } from 'react'
-  import Mavbar from './component/Mavbar'
-  import Filter from './component/Filter'
-  import Card from './component/Card'
-  import Cards from './component/Cards'
-  import { apiUrl, filterData } from './data'
-import { toast } from 'react-toastify'
-
-  
-  const App = ({filterData}) => {
-
-    useEffect(()=>{
-
-    const fetchdata = async()=>{
-
-      try{
-
-        const res = await fetch(apiUrl);
-        const data =  res.json();
-        //save
-        console.log(data);
+import React, { useEffect, useState } from 'react'
+import Navbar from './component/Navbar'
+import Filter from './component/Filter'
+import Cards from './component/Cards'
+import {filterData, apiUrl} from './data'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Card from './component/Card'
+import loader from './component/loader';
 
 
-      }
-      catch(error){
-        toast.error("error");
 
-      }
+const App = ( {filterData}) => {
+
+  // let filterData = props.filterData;
+  const [courses , setcourses] = useState();
+  const [loading, setloading] = useState(false);
+
+  async function fetchdata() {
+
+    setloading(true);
+
+
+    try{
+
+      const res = await fetch(apiUrl);
+      const output = res.json();
+      console.log(output);
+
+      setcourses(output.data);
+
+    }catch(err){
+      toast.err("error");
+
     }
-    })
-    return (
-      <div>
-
-
-        <Mavbar/>
-        <Filter  filterData = {filterData}/>
-        <Card/>
-      </div>
-    )
+    
+    setloading(false);
   }
-  
-  export default App
- 
 
+  useEffect( ()=>{
+    fetchdata();
+  })
+  return (
+    <div>
+
+      <div>
+        <Navbar/>
+      </div>
+
+      <div>
+      <div>
+        <Filter filterData = {filterData}/>
+      </div>
+
+      <div>
+       {
+        loading ? (<loader/>):(<Card filterData = {filterData}/>)
+       }
+      </div>
+      </div>
+      
+    </div>
+  )
+}
+
+export default App;

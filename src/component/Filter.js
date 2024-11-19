@@ -1,34 +1,19 @@
-// import React from 'react'
-// import {filterData, apiUrl} from  "../data"
-
-// const Filter = ({filterData}) => {
-//   return (
-//     <div>
-
-//         {
-//             fileterData.map( (data)=>{
-//                 return <button>
-//                     {data.title};
-//                 </button>
-//             })
-//         }
-//     </div>
-//   )
-// }
-
-// export default Filter;
 import React from 'react';
 
-const Filter = ({ filterData }) => {
+// Importing filterData for fallback/default
+import { filterData as defaultFilterData } from '../data';
+
+const Filter = ({ filterData = defaultFilterData }) => {
   return (
     <div>
-      {filterData.map((data, index) => (
-        <button key={index}>
-          {data.title}
-        </button>
+      {filterData.map((data) => (
+        <button key={data.id}>{data.title}</button>
       ))}
     </div>
   );
 };
+
+
+
 
 export default Filter;
